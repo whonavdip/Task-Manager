@@ -1,4 +1,5 @@
 import './App.css';
+
 import React, { useState } from 'react';
 
 const sharedClasses = {
@@ -8,37 +9,13 @@ const sharedClasses = {
 };
 
 const TaskManager = () => {
-  const [value, setValue] = useState(0);
-  const [checkboxState, setCheckboxState] = useState();
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
-  const [selectedtask, setSelectedtask] = useState([]);
   const [tasks, setTasks] = useState([
     { title: 'Sample Task', description: 'Description', dueDate: '2024-04-24' }
   ]);
-  const uniqueTasks = tasks.filter(task => !selectedtask.includes(task));
-
-
- 
-  const handleChange = (event, task) => {
-    
-    const value = event.target.checked ? 1 : 0;
-    const title=task.title;
-    if(value==1)
-    {
-      setSelectedtask(prevTasks => [...prevTasks, task]);
-      console.log(selectedtask)
-    }
-    else if(value==0)
-    {
-      setSelectedtask(prevTasks => prevTasks.filter(task => task.title !== title));
-      console.log(selectedtask);
-    }
-  };
-
- 
-
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -52,7 +29,6 @@ const TaskManager = () => {
     setDate(event.target.value);
   }
 
-  
   const handleAddTask = () => {
     // Save data to variables or perform any desired action
     
@@ -87,39 +63,20 @@ const TaskManager = () => {
           <input type="date" className={sharedClasses.input} value={date} onChange={handleDateChange}/>
           <button className="bg-blue-500 text-white p-2" onClick={handleAddTask}>Add Task</button>
         </div>
-        {/* <div className="flex gap-2">
-          <button className={sharedClasses.button} >All</button>
+        <div className="flex gap-2">
+          <button className={sharedClasses.button} onClick={}>All</button>
           <button className={sharedClasses.button}>Completed</button>
           <button className={sharedClasses.button}>Pending</button>
-        </div> */}
+        </div>
       </div>
       <div className="mb-4">
-        <h2 className="text-xl font-semibold mb-2">All Tasks:</h2>
-        <ul >
+        <h2 className="text-xl font-semibold mb-2">Tasks:</h2>
+        <ul className="list-disc pl-5">
           {tasks.map((task, index) => (
             <li key={index} className="flex items-center gap-2 mb-2">
-              <input type="checkbox"  
-              checked={checkboxState}
-              onChange={(event) => handleChange(event,task)}/>
-              <span >{`${task.title} - ${task.description} - Due: ${task.dueDate}`}</span>
-              <button onClick={() => handleDeleteTask(index)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-        <h2 className="text-xl font-semibold mb-2">Completed Tasks:</h2>
-        <ul >
-          {selectedtask.map((selectedtask, index) => (
-            <li key={index} className="flex items-center gap-2 mb-2">
-              <span >{`${selectedtask.title} - ${selectedtask.description} - Due: ${selectedtask.dueDate}`}</span>
-            </li>
-          ))}
-        </ul>
-        <h2 className="text-xl font-semibold mb-2">Pending Tasks:</h2>
-        <ul >
-          
-          {uniqueTasks.map((uniqueTasks, index) => (
-            <li key={index} className="flex items-center gap-2 mb-2">
-              <span >{`${uniqueTasks.title} - ${uniqueTasks.description} - Due: ${uniqueTasks.dueDate}`}</span>
+              <input type="checkbox" className="form-checkbox" />
+              <span className="flex-1">{`${task.title} - ${task.description} - Due: ${task.dueDate}`}</span>
+              <button className="text-red-500" onClick={() => handleDeleteTask(index)}>Delete</button>
             </li>
           ))}
         </ul>
