@@ -19,7 +19,11 @@ const TaskManager = () => {
   ]);
   const uniqueTasks = tasks.filter(task => !selectedtask.includes(task));
 
+  const [lastClicked, setLastClicked] = useState(null);
 
+  const handleClick = (buttonName) => {
+    setLastClicked(buttonName);
+  };
  
   const handleChange = (event, task) => {
     
@@ -87,11 +91,9 @@ const TaskManager = () => {
           <input type="date" className={sharedClasses.input} value={date} onChange={handleDateChange}/>
           <button className="bg-blue-500 text-white p-2" onClick={handleAddTask}>Add Task</button>
         </div>
-        {/* <div className="flex gap-2">
-          <button className={sharedClasses.button} >All</button>
-          <button className={sharedClasses.button}>Completed</button>
-          <button className={sharedClasses.button}>Pending</button>
-        </div> */}
+        <button onClick={() => handleClick("All")}>All</button>
+      <button onClick={() => handleClick("Completed")}>Completed</button>
+      <button onClick={() => handleClick("Pending")}>Pending</button>
       </div>
       <div className="mb-4">
         <h2 className="text-xl font-semibold mb-2">All Tasks:</h2>
@@ -106,8 +108,8 @@ const TaskManager = () => {
             </li>
           ))}
         </ul>
-        <h2 className="text-xl font-semibold mb-2">Completed Tasks:</h2>
-        <ul >
+        {/* <h2 className="text-xl font-semibold mb-2">Completed Tasks:</h2>
+        <ul>
           {selectedtask.map((selectedtask, index) => (
             <li key={index} className="flex items-center gap-2 mb-2">
               <span >{`${selectedtask.title} - ${selectedtask.description} - Due: ${selectedtask.dueDate}`}</span>
@@ -122,7 +124,33 @@ const TaskManager = () => {
               <span >{`${uniqueTasks.title} - ${uniqueTasks.description} - Due: ${uniqueTasks.dueDate}`}</span>
             </li>
           ))}
-        </ul>
+        </ul> */}
+        {lastClicked === "All" && <ul >
+          {tasks.map((task, index) => (
+            <li key={index} className="flex items-center gap-2 mb-2">
+              <input type="checkbox"  
+              checked={checkboxState}
+              onChange={(event) => handleChange(event,task)}/>
+              <span >{`${task.title} - ${task.description} - Due: ${task.dueDate}`}</span>
+              <button onClick={() => handleDeleteTask(index)}>Delete</button>
+            </li>
+          ))}
+        </ul>}
+      {lastClicked === "Completed" && <ul>
+          {selectedtask.map((selectedtask, index) => (
+            <li key={index} className="flex items-center gap-2 mb-2">
+              <span >{`${selectedtask.title} - ${selectedtask.description} - Due: ${selectedtask.dueDate}`}</span>
+            </li>
+          ))}
+        </ul>}
+      {lastClicked === "Pending" && <ul>
+          
+          {uniqueTasks.map((uniqueTasks, index) => (
+            <li key={index} className="flex items-center gap-2 mb-2">
+              <span >{`${uniqueTasks.title} - ${uniqueTasks.description} - Due: ${uniqueTasks.dueDate}`}</span>
+            </li>
+          ))}
+        </ul>}
       </div>
     </div>
   );
